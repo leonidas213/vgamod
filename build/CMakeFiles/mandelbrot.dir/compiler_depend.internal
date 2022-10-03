@@ -3085,16 +3085,6 @@ CMakeFiles/mandelbrot.dir/mandelbrot.cpp.obj
  D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/uart.h
  D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dreq.h
  D:/RaspberryPiPico/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb.h
- D:/RaspberryPiPico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h
- D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/pio.h
- D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/pio.h
- D:/RaspberryPiPico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio_instructions.h
- D:/RaspberryPiPico/pico-sdk/src/rp2_common/hardware_dma/include/hardware/dma.h
- D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/dma.h
- D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dma.h
- D:/RaspberryPiPico/Codes/vgamod/build/hsync.pio.h
- D:/RaspberryPiPico/Codes/vgamod/build/vsync.pio.h
- D:/RaspberryPiPico/Codes/vgamod/build/rgb.pio.h
  D:/RaspberryPiPico/Codes/vgamod/tetris/tetris.h
  C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/arm-none-eabi/include/c++/10.3.1/array
  C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/arm-none-eabi/include/c++/10.3.1/utility
@@ -3105,4 +3095,15 @@ CMakeFiles/mandelbrot.dir/mandelbrot.cpp.obj
  C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/arm-none-eabi/include/c++/10.3.1/concepts
  C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/arm-none-eabi/include/c++/10.3.1/bits/range_cmp.h
  D:/RaspberryPiPico/Codes/vgamod/GameOfLife/gof.h
+ D:/RaspberryPiPico/Codes/vgamod/Vga/vga.h
+ D:/RaspberryPiPico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h
+ D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/pio.h
+ D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/pio.h
+ D:/RaspberryPiPico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio_instructions.h
+ D:/RaspberryPiPico/pico-sdk/src/rp2_common/hardware_dma/include/hardware/dma.h
+ D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/dma.h
+ D:/RaspberryPiPico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dma.h
+ D:/RaspberryPiPico/Codes/vgamod/Vga/hsync.pio.h
+ D:/RaspberryPiPico/Codes/vgamod/Vga/vsync.pio.h
+ D:/RaspberryPiPico/Codes/vgamod/Vga/rgb.pio.h
 

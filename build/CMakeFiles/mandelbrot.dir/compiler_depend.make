@@ -3084,16 +3084,6 @@ CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2_common\pico_stdio_usb\include\pico\stdio_usb.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_dma\include\hardware\dma.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\dma.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dma.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: hsync.pio.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: vsync.pio.h
-CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: rgb.pio.h
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: ..\tetris\tetris.h
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\arm-none-eabi\include\c++\10.3.1\array"
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\arm-none-eabi\include\c++\10.3.1\utility"
@@ -3104,6 +3094,17 @@ CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: "C:\Program Files (x86)\GNU Arm Em
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\arm-none-eabi\include\c++\10.3.1\concepts"
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\arm-none-eabi\include\c++\10.3.1\bits\range_cmp.h"
 CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: ..\GameOfLife\gof.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: ..\Vga\vga.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_dma\include\hardware\dma.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\dma.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dma.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: ..\Vga\hsync.pio.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: ..\Vga\vsync.pio.h
+CMakeFiles\mandelbrot.dir\mandelbrot.cpp.obj: ..\Vga\rgb.pio.h
 
 
 
@@ -3198,6 +3199,8 @@ D:\RaspberryPiPico\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions
 D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_claim\claim.c:
 
 D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h:
+
+..\Vga\hsync.pio.h:
 
 D:\RaspberryPiPico\pico-sdk\src\common\pico_base\include\pico\error.h:
 
@@ -3453,6 +3456,8 @@ D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_vreg\include\hardware\vreg.h
 
 D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pll.h:
 
+..\Vga\vsync.pio.h:
+
 D:\RaspberryPiPico\pico-sdk\src\rp2_common\hardware_xosc\include\hardware\xosc.h:
 
 D:\RaspberryPiPico\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\xosc.h:
@@ -3669,14 +3674,12 @@ D:\RaspberryPiPico\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c:
 
 ..\FrameBuffer\16x32_font.h:
 
-hsync.pio.h:
-
-vsync.pio.h:
-
-rgb.pio.h:
-
 ..\tetris\tetris.h:
 
 "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\arm-none-eabi\include\c++\10.3.1\concepts":
 
 "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\arm-none-eabi\include\c++\10.3.1\bits\range_cmp.h":
+
+..\Vga\vga.h:
+
+..\Vga\rgb.pio.h:
