@@ -1,0 +1,3 @@
+[submodule "FrameBuffer"]
+	path = FrameBuffer
+	url = https://github.com/leonidas213/FrameBuffer.git
