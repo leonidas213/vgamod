@@ -1,0 +1,3 @@
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/CMakeFiles/pioasm.dir
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/CMakeFiles/edit_cache.dir
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/CMakeFiles/rebuild_cache.dir

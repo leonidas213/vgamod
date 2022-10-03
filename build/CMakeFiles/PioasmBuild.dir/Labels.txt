@@ -1,0 +1,13 @@
+# Target labels
+ PioasmBuild
+# Source files and their labels
+D:/RaspberryPiPico/Codes/vgamod/build/CMakeFiles/PioasmBuild
+D:/RaspberryPiPico/Codes/vgamod/build/CMakeFiles/PioasmBuild.rule
+D:/RaspberryPiPico/Codes/vgamod/build/CMakeFiles/PioasmBuild-complete.rule
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-build.rule
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-configure.rule
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-download.rule
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-install.rule
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-mkdir.rule
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-patch.rule
+D:/RaspberryPiPico/Codes/vgamod/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-update.rule

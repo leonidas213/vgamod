@@ -1,0 +1,23 @@
+{
+    "cmake.statusbar.advanced": {
+        "debug": {
+            "visibility": "hidden"
+        },
+        "launch": {
+            "visibility": "hidden"
+        },
+        "build": {
+            "visibility": "default"
+        },
+        "buildTarget": {
+            "visibility": "hidden"
+        }
+    },
+    "cmake.buildBeforeRun": true,
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cortex-debug.openocdPath": "D:/RaspberryPiPico/Pico/tools/openocd-picoprobe/New folder/src/openocd.exe",
+    "files.associations": {
+        "array": "cpp",
+        "utility": "cpp"
+    }
+}
