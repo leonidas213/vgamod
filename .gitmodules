@@ -3,4 +3,4 @@
 	url = https://github.com/leonidas213/FrameBuffer.git
 [submodule "Framebuffer"]
 	path = Framebuffer
-	url = https://github.com/leonidas213/Framebuffer.git
+	url = https://github.com/leonidas213/Framebuffer
