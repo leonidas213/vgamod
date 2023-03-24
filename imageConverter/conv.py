@@ -1,7 +1,6 @@
 import PIL.Image as Image
 import numpy as np
 import os
-
 class FileFuncs:
     @staticmethod
     def Write(Data, FileName, mode="w"):
@@ -30,21 +29,28 @@ def cga_quantize(image,size):
     image=image.resize(size)
     pal_image= Image.new("P", (1,1))
     pal_image.putpalette( [0,0,0,
-                           0,255,0,
+                           
                            255,0,0,
+                           0,255,0,
+                           255,255,0,
                            0, 0, 255,
-                            255,255,255,
-                            255,255,0,
-                            255,0,255,
-                            0,255,255
-
+                           255,0,255,
+                           0,255,255,
+                           255,255,255,
+                            
                            ])
-    return image.convert("RGB").quantize(palette=pal_image)
+    return image.convert("RGB").quantize(palette=pal_image,method =1,kmeans =180)
 
-im=Image.open("Aerkany_reisen_from_touhou_flying_through_light_bulletstouhouga_0251718f-cc6b-42b3-be22-8fa6026c324b.png")
-
-im=cga_quantize(im,(600,480))
-im=np.asarray(im,)
+#im=Image.open("Aerkany_reisen_from_touhou_flying_through_light_bulletstouhouga_0251718f-cc6b-42b3-be22-8fa6026c324b.png")
+#im=Image.open("Sprite.png")
+imageName="reisen.png"
+dir_path = os.path.dirname(os.path.realpath(__file__))
+print(dir_path)
+im=Image.open(dir_path+"/"+imageName)
+im=im.resize((640,480))
+im=cga_quantize(im,(640,480))
+im.save(dir_path+"/"+"quantized"+imageName)
+im=np.asarray(im)
 pixelarray=[]
 
 once=False
@@ -60,11 +66,9 @@ for x in im:
             pixelarray.append((tval<<3)|y)
 
 
-res = ',0x'.join((format(x, '02x') for x in pixelarray))
-res="0x"+res
-res="const unsigned char image[]={"+res+"};"
+#res = ',0x'.join((format(x, '02x') for x in pixelarray))
+#res="0x"+res
+res=str(pixelarray)
+res="const unsigned char "+imageName.split(".")[0]+"[]={"+res[1:-1]+"};"
 print(res)
-FileFuncs.Write(res,"test.cpp","w")
-
-
-im.save("newim.png")
+FileFuncs.Write(res,imageName.split(".")[0]+".cpp","w")

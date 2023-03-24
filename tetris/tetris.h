@@ -1,16 +1,18 @@
 #pragma once
 #include "pico/stdlib.h"
 #include <array>
-#include"framebuffer.h"
+#include "framebuffer.h"
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 20
 class Piece
 {
 public:
-    int rotation = 0;
-    int x, y;
-
     int pieceType;
+    int oldx = 0, oldy = 0, oldrot = 0;
+    void moveDown();
+    void moveLeft();
+    void moveRight();
+    void Reset();
     void rotateRight();
     void rotateLeft();
     bool get(int, int, int rot = -1);
@@ -30,16 +32,18 @@ public:
     std::array<std::array<int8_t, 2>, 4> rotationRules[8] = {0};
     Piece(int type = 0, int x = 0, int y = 0, int rotation = 0);
     Piece(const Piece &p);
+    int rotation = 0;
+    int x = 0, y = 0;
 };
 class Board
 {
 private:
-    const int ButtonA =    1;
-    const int ButtonB =    1;
+    const int ButtonA = 1;
+    const int ButtonB = 1;
     const int ButtonLeft = 1;
-    const int ButtonRight =1;
+    const int ButtonRight = 1;
     const int ButtonDown = 1;
-    const int ButtonUp =   1;
+    const int ButtonUp = 1;
 
     bool but1 = false, but2 = false;
     bool but3 = false, but4 = false;
@@ -51,13 +55,20 @@ private:
     bool but3Pressed = false, but4Pressed = false;
     bool but5Pressed = false, but6Pressed = false;
 
+    int offsetx, offsety;
+    FrameBuffer *buf;
+    int size;
+
 public:
+    bool gameover = false;
     bool putPiece(Piece piece, bool real = false);
-    void toScreen(FrameBuffer *buf);
+    void toScreen();
     void IFever();
     std::array<std::array<int8_t, (BOARD_WIDTH)>, (BOARD_HEIGHT)> board = {0};
     std::array<std::array<int8_t, (BOARD_WIDTH + 2)>, (BOARD_HEIGHT + 1)> RealBoard = {0};
 
+
+    void pieceShower();
     void Clear();
     bool collisionCheck(Piece *piece, int *wallcol = nullptr, int wallcolCheck = 0);
     bool CheckMoveHorizontal(Piece *piece);
@@ -66,6 +77,6 @@ public:
     int CheckLines(bool);
     int collisionRotateCheck(Piece *piece, int rot);
     bool GeneralCollisionCheck(Piece *piece, int offsetx, int offsety);
-    Board();
+    Board(FrameBuffer *buf, int ofsetx = 0, int ofsety = 0, int size = 20);
 };
 void tetris(FrameBuffer *buf);

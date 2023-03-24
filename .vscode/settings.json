@@ -15,9 +15,14 @@
     },
     "cmake.buildBeforeRun": true,
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-    "cortex-debug.openocdPath": "D:/RaspberryPiPico/Pico/tools/openocd-picoprobe/New folder/src/openocd.exe",
     "files.associations": {
         "array": "cpp",
-        "utility": "cpp"
-    }
+        "utility": "cpp",
+        "type_traits": "cpp",
+        "initializer_list": "cpp",
+        "cstddef": "cpp"
+    },
+    "cortex-debug.openocdPath": "D:/RaspberryPiPico/openocd/openocd.exe",
+    "cortex-debug.gdbPath": "arm-none-eabi-gdb",
+    "cortex-debug.registerUseNaturalFormat": true
 }

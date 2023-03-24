@@ -10,6 +10,7 @@ Piece::Piece(int type, int x, int y, int rotation)
     this->x = x;
     this->y = y;
     this->rotation = rotation;
+
     switch (type)
     {
     case 0:
@@ -437,19 +438,51 @@ Piece::Piece(const Piece &p)
     this->pieceType = p.pieceType;
     this->x = p.x;
     this->y = p.y;
+    this->oldx = p.oldx;
+    this->oldy = p.oldy;
+    this->oldrot = p.oldrot;
     this->rotation = p.rotation;
 }
 void Piece::rotateRight()
 {
+    this->oldrot = this->rotation;
     this->rotation++;
     if (this->rotation > 3)
         this->rotation = 0;
 }
 void Piece::rotateLeft()
 {
+    this->oldrot = this->rotation;
     this->rotation--;
     if (this->rotation < 0)
         this->rotation = 3;
+}
+void Piece::moveDown()
+{
+    int var = this->y;
+    this->oldy = var;
+    this->y++;
+}
+void Piece::moveLeft()
+{
+    int var = this->x;
+    this->oldx = var;
+    this->x--;
+}
+void Piece::moveRight()
+{
+    int var = this->x;
+    this->oldx = var;
+    this->x++;
+}
+void Piece::Reset()
+{
+    this->x = 0;
+    this->y = -1;
+    this->rotation = 0;
+    this->oldx = 0;
+    this->oldy = -1;
+    this->oldrot = 0;
 }
 bool Piece::get(int x, int y, int rot)
 {
@@ -459,8 +492,12 @@ bool Piece::get(int x, int y, int rot)
     }
     return this->piece[this->rotation][x] & (1 << y);
 }
-Board::Board()
+Board::Board(FrameBuffer *buf, int ofsetx, int ofsety, int size)
 {
+    this->offsetx = ofsetx;
+    this->offsety = ofsety;
+    this->buf = buf;
+    this->size = size;
     this->Clear();
 }
 void Board::IFever()
@@ -526,26 +563,56 @@ void Board::Clear()
 }
 bool Board::putPiece(Piece piece, bool collided)
 {
-    int size = 6;
     bool isColliding = false;
 
     isColliding = this->collisionCheck(&piece);
+
+    for (int k = 3; k >= 0; k--)
+    {
+        for (int m = 0; m < 8; m++)
+        {
+            if (piece.get(k, m, piece.oldrot))
+            {
+                int x2 = (piece.oldx + m);
+                int y2 = (piece.oldy + k);
+                // printf("oldx: %d, oldy: %d, x2: %d, y2: %d\n", piece.oldx, piece.oldy, x2, y2);
+                if (x2 >= 0 && x2 < BOARD_WIDTH && y2 >= 0 && y2 < BOARD_HEIGHT)
+                {
+                    int newx2 = (x2 * this->size) + this->offsetx;
+                    int newy2 = (y2 * this->size) + this->offsety;
+                    this->buf->drawLine(newx2, newy2, newx2 + this->size, newy2 + this->size, Colors::BLACK, Mode::replace);
+                    this->buf->drawRect(newx2, newy2, this->size, this->size, Colors::BLACK, Mode::replace);
+                }
+            }
+        }
+    }
     for (int i = 3; i >= 0; i--)
     {
         for (int j = 0; j < 8; j++)
         {
             if (piece.get(i, j))
             {
-                int x = piece.x + j;
-                int y = piece.y + i;
+                int x = (piece.x + j);
+                int y = (piece.y + i);
+
                 if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT)
                 {
+                    int newx = (x * this->size) + this->offsetx;
+                    int newy = (y * this->size) + this->offsety;
+                    /*if (y > 0)
+                    {
+                        this->board[y - 1][x] = 8;
+                    }*/
 
-                    this->board[y][x] = 1;
+                    this->buf->drawLine(newx, newy, newx + this->size, newy + this->size, Colors::RED);
+                    this->buf->drawRect(newx, newy, this->size, this->size, Colors::RED);
+
+                    this->board[y][x] = 8;
                 }
             }
         }
     }
+
     if (collided)
     {
         CheckLines(true);
@@ -556,6 +623,8 @@ bool Board::putPiece(Piece piece, bool collided)
                 uint8_t val = this->board[y][x];
                 if (val)
                 {
+                    if (val == 8)
+                        val = 1;
                     this->RealBoard[y][x + 1] = val;
                 }
                 else
@@ -564,37 +633,56 @@ bool Board::putPiece(Piece piece, bool collided)
                 }
             }
         }
+        // gameover
+        if (this->board[0][3] || this->board[0][4] || this->board[0][5] || this->board[0][6])
+        {
+            this->gameover = true;
+        }
     }
+    this->toScreen();
     return isColliding;
 }
-void Board::toScreen(FrameBuffer *buf)
+void Board::toScreen()
 {
-    int size = 10;
+    // border
+    this->buf->drawRect(this->offsetx, this->offsety, 10 * this->size, 20 * this->size, Colors::BLUE);
+    this->pieceShower();
 
+    bool once = true;
     for (int y = 0; y < BOARD_HEIGHT; y++)
     {
         for (int x = 0; x < BOARD_WIDTH; x++)
         {
             uint8_t val = this->board[y][x];
             this->board[y][x] = this->RealBoard[y][x + 1];
+
             if (val)
             {
-                if (val == 2)
+                if (val == 8)
                 {
-                    for (int i = 0; i < size; i++)
-                    {
-                        for (int j = 0; j < size; j++)
-                        {
-                            // buf->setPixel( i * size + y, j * size + x,Colors::GREEN);
-                        }
-                    }
+                    // buf->fillRect(x * this->size, y * this->size, this->size, this->size, (Colors)0, Mode::replace);
                 }
                 else
                 {
-                    buf->drawLine(x * size, y * size, x * size + size, y * size + size, Colors::RED);
-                }
+                    int newx = x * this->size + this->offsetx;
+                    int newy = y * this->size + this->offsety;
+                    if (val == 2)
+                    {
+                        for (int i = 0; i < this->size; i++)
+                        {
+                            for (int j = 0; j < this->size; j++)
+                            {
+                                // buf->setPixel( i * this->size + y, j * this->size + x,Colors::GREEN);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this->buf->drawLine(newx, newy, newx + this->size, newy + this->size, Colors::RED);
+                    }
 
-                buf->drawRect(x * size, y * size, x * size + size, y * size + size, (Colors)val);
+                    this->buf->drawRect(newx, newy, this->size, this->size, (Colors)val);
+                }
             }
         }
     }
@@ -608,35 +696,35 @@ void Board::toScreen(FrameBuffer *buf)
             {
                 if (val == 2)
                 {
-                    for (int y = 0; y < size; y++)
+                    for (int y = 0; y < this->size; y++)
                     {
-                        for (int x = 0; x < size; x++)
+                        for (int x = 0; x < this->size; x++)
                         {
-                            buf->setPixel(i * size + y, j * size + x, Colors::GREEN);
+                            buf->setPixel(i * this->size + y, j * this->size + x, Colors::GREEN);
                         }
                     }
                 }
                 else
                 {
-                    buf->drawLine(i * size, j * size, i * size + size, j * size + size, Colors::RED);
+                    buf->drawLine(i * this->size, j * this->size, i * this->size + this->size, j * this->size + this->size, Colors::RED);
                 }
 
-                buf->drawRect(i * size, j * size, i * size + size, j * size + size, Colors::YELLOW);
+                buf->drawRect(i * this->size, j * this->size, i * this->size + this->size, j * this->size + this->size, Colors::YELLOW);
             }
         }
     }
-    int ofset = BOARD_HEIGHT * size + 2;
+    int ofset = BOARD_HEIGHT * this->size + 2;
     for (int i = 0; i < BOARD_HEIGHT + 1; i++)
     {
         for (int j = 0; j < BOARD_WIDTH + 2; j++)
         {
             if (this->RealBoard[i][j])
             {
-                for (int y = 0; y < size; y++)
+                for (int y = 0; y < this->size; y++)
                 {
-                    for (int x = 0; x < size; x++)
+                    for (int x = 0; x < this->size; x++)
                     {
-                        buf->setPixel(i * size + y + ofset, j * size + x, Colors::BLUE);
+                        buf->setPixel(i * this->size + y + ofset, j * this->size + x, Colors::BLUE);
                     }
                 }
             }
@@ -756,7 +844,7 @@ bool Board::CheckMoveHorizontal(Piece *piece)
         }
         if (moveint == 0)
         {
-            piece->x--;
+            piece->moveLeft();
         }
 
         return true;
@@ -790,7 +878,7 @@ bool Board::CheckMoveHorizontal(Piece *piece)
 
         if (moveint == 0)
         {
-            piece->x++;
+            piece->moveRight();
         }
         return true;
     }
@@ -912,7 +1000,7 @@ bool Board::CheckMoveVertical(int *timer, Piece *piece, bool *col)
         {
             if (collisionCheck(piece))
                 break;
-            piece->y = piece->y + 1;
+            piece->moveDown();
             y++;
         }
         *col = true;
@@ -1123,90 +1211,134 @@ int Board::collisionRotateCheck(Piece *piece, int rot)
     piece->rotation = tempPiece.rotation;
     return tryCount;
 }
+void shuffler(int *array)
+{
+    for (int i = 14 - 1; i > 0; i--)
+    {
+        int j = rand() % (i + 1);
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        printf("%d ", array[i]);
+    }
+    printf("%d \n", array[0]);
+}
+void Board::pieceShower()
+{
 
+    this->buf->drawRect(30, this->offsety + 10, 90, 90, Colors::BLUE);
+}
 void tetris(FrameBuffer *buf)
 {
-    Board board = Board();
-
-    Piece I = Piece(0, 0, 0, 0);
-    Piece J = Piece(1, 0, 0, 0);
-    Piece L = Piece(2, 0, 0, 0);
-    Piece O = Piece(3, 0, 0, 0);
-    Piece S = Piece(4, 0, 0, 0);
-    Piece Z = Piece(5, 0, 0, 0);
-    Piece T = Piece(6, 0, 0, 0);
+    Board board = Board(buf, 150, 30);
+    int pool1[] = {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6};
+    int pool2[] = {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6};
+    bool poolNum = false;
+    Piece I = Piece(0, 0, -1, 0);
+    Piece J = Piece(1, 0, -1, 0);
+    Piece L = Piece(2, 0, -1, 0);
+    Piece O = Piece(3, 0, -1, 0);
+    Piece S = Piece(4, 0, -1, 0);
+    Piece Z = Piece(5, 0, -1, 0);
+    Piece T = Piece(6, 0, -1, 0);
     Piece pieces[7] = {I, J, L, O, S, Z, T};
+
     board.Clear();
     board.IFever();
-    int a = 6;
+    shuffler(pool1);
+    shuffler(pool2);
+    int a = pool1[0];
+    int count = 0;
     bool isCollided = false, colliderTimerOn = false, colliding;
     int timer = 0;
     bool once = true, timerOnce = true, butT = true;
     while (1)
     {
-        // board.Clear();
-        //buf->clear();
-
-        if (timer >= 10 & (!colliderTimerOn))
+        if (!board.gameover)
         {
 
-            pieces[a].y++;
+            // board.Clear();
+            // buf->clear();
 
-            timer = 0;
-        }
-        board.CheckMoveRotation(&pieces[a]);
-        board.CheckMoveVertical(&timer, &pieces[a], &isCollided);
-        bool moveCheck = board.CheckMoveHorizontal(&pieces[a]);
-
-        colliding = board.putPiece(pieces[a], isCollided);
-
-        if (colliding)
-        {
-            if (timerOnce)
+            if (timer >= 10 & (!colliderTimerOn))
             {
-                timerOnce = false;
+
+                pieces[a].moveDown();
+
                 timer = 0;
             }
-            colliderTimerOn = true;
-            once = true;
-        }
-        else
-        {
-            if (once)
+            board.CheckMoveRotation(&pieces[a]);
+            board.CheckMoveVertical(&timer, &pieces[a], &isCollided);
+            bool moveCheck = board.CheckMoveHorizontal(&pieces[a]);
+
+            colliding = board.putPiece(pieces[a], isCollided);
+
+            if (colliding)
             {
-                timerOnce = true;
-                once = false;
-                timer = 0;
+                if (timerOnce)
+                {
+                    timerOnce = false;
+                    timer = 0;
+                }
+                colliderTimerOn = true;
+                once = true;
+            }
+            else
+            {
+                if (once)
+                {
+                    timerOnce = true;
+                    once = false;
+                    timer = 0;
+                    colliderTimerOn = false;
+                }
+            }
+            if (isCollided)
+            {
+                isCollided = false;
                 colliderTimerOn = false;
+                pieces[a].Reset();
+                count++;
+                if (count == 14)
+                {
+                    if (poolNum)
+                    {
+                        shuffler(pool1);
+                        poolNum = false;
+                    }
+                    else
+                    {
+                        shuffler(pool2);
+                        poolNum = true;
+                    }
+                    count = 0;
+                }
+                if (poolNum)
+                {
+                    a = pool1[count];
+                }
+                else
+                {
+                    a = pool2[count];
+                }
             }
-        }
-        if (isCollided)
-        {
-            isCollided = false;
-            colliderTimerOn = false;
-
-            pieces[a].y = -1;
-            pieces[a].x = 2;
-            pieces[a].rotation = 0;
-            a = rand() % 7;
-        }
-        if (colliderTimerOn)
-        {
-            if (moveCheck)
+            if (colliderTimerOn)
             {
-                timer -= 1;
+                if (moveCheck)
+                {
+                    timer -= 1;
+                }
+                if (timer >= 20)
+                {
+                    isCollided = true;
+                    timer = 0;
+                }
             }
-            if (timer >= 20)
-            {
-                isCollided = true;
-                timer = 0;
-            }
-        }
 
-        timer += 1;
-        board.toScreen(buf);
-        buf->drawChar((char)48 + pieces[a].rotation + 1, 0, 0, Colors::WHITE);
+            timer += 1;
+            // board.toScreen(buf);
+            buf->drawChar((char)48 + pieces[a].rotation + 1, 0, 0, Colors::WHITE);
+        }
         sleep_ms(30);
-        buf->clear();
     }
 }

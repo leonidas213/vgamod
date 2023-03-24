@@ -22,3 +22,4 @@ __pycache__/
 # information for Eclipse / Flash Builder.
 *.mp4
 /build/
+*.jpg
